@@ -4,10 +4,10 @@ const { dirname, resolve, posix } = require('path');
 module.exports = {
     configs: {
         recommended: {
-            plugins: ['require-extensions'],
+            plugins: ['@exodus/require-extensions'],
             rules: {
-                'require-extensions/require-extensions': 'error',
-                'require-extensions/require-index': 'error',
+                '@exodus/require-extensions/require-extensions': 'error',
+                '@exodus/require-extensions/require-index': 'error',
             },
         },
     },
