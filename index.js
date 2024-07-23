@@ -39,13 +39,10 @@ module.exports = {
                     node,
                     message: 'Directory paths must end with index.js',
                     fix(fixer) {
-                        const { value: importPath } = node.source;
+                        const { value: source } = node.source;
 
-                        const prefix = importPath.startsWith('./') || importPath === '.' ? './' : '';
-                        return fixer.replaceText(
-                            node.source,
-                            `'${prefix}${posix.join(node.source.value, 'index.js')}'`
-                        );
+                        const prefix = source.startsWith('./') || source === '.' ? './' : '';
+                        return fixer.replaceText(node.source, `'${prefix}${posix.join(source, 'index.js')}'`);
                     },
                 });
             }
