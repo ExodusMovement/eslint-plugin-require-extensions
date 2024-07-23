@@ -35,7 +35,6 @@ describe('eslint-plugin-require-extensions', () => {
                 name: 'file with sibling folder of same name',
                 code: "import arkham from './arkham'",
                 output: "import arkham from './arkham.js'",
-                only: true,
                 errors: ['Relative imports and exports must end with .js'],
                 filename,
             },
