@@ -76,6 +76,20 @@ describe('eslint-plugin-require-extensions', () => {
                 filename,
             },
             {
+                name: 'export * without index',
+                code: "export * from './dir'",
+                output: "export * from './dir/index.js'",
+                errors: ['Directory paths must end with index.js'],
+                filename,
+            },
+            {
+                name: 'export named without index',
+                code: "export { joker } from './dir'",
+                output: "export { joker } from './dir/index.js'",
+                errors: ['Directory paths must end with index.js'],
+                filename,
+            },
+            {
                 name: "import from '../'",
                 code: "import plugin from '../'",
                 output: "import plugin from '../index.js'",
