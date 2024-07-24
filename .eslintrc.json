@@ -1,6 +1,5 @@
 {
-    "extends": ["plugin:require-extensions/recommended"],
-    "plugins": ["require-extensions"],
+    "extends": ["plugin:@exodus/require-extensions/recommended"],
     "parserOptions": {
         "sourceType": "module",
         "ecmaVersion": 2020
