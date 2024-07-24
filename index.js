@@ -1,5 +1,5 @@
 const { existsSync, lstatSync } = require('fs');
-const { dirname, resolve, posix } = require('path');
+const { join, dirname, resolve, posix, extname, basename } = require('path');
 
 module.exports = {
     configs: {
@@ -13,7 +13,9 @@ module.exports = {
     },
     rules: {
         'require-extensions': rule((context, node, path) => {
-            if (!existsSync(path)) {
+            const fileExt = extname(context.getFilename());
+
+            if (!existsSync(path) || existsSync(`${path}${fileExt}`)) {
                 let fix;
                 if (!node.source.value.includes('?')) {
                     fix = (fixer) => {
@@ -29,13 +31,18 @@ module.exports = {
             }
         }),
         'require-index': rule((context, node, path) => {
-            if (existsSync(path) && lstatSync(path).isDirectory()) {
+            const fileExt = extname(context.getFilename());
+            const conflictingFile = join(dirname(path), `${basename(path)}${fileExt}`);
+
+            if (existsSync(path) && lstatSync(path).isDirectory() && !existsSync(conflictingFile)) {
                 context.report({
                     node,
                     message: 'Directory paths must end with index.js',
                     fix(fixer) {
-                        const prefix = node.source.value.startsWith('./') ? './' : '';
-                        return fixer.replaceText(node.source, `'${prefix}${posix.join(node.source.value, 'index.js')}'`);
+                        const { value: source } = node.source;
+
+                        const prefix = source.startsWith('./') || source === '.' ? './' : '';
+                        return fixer.replaceText(node.source, `'${prefix}${posix.join(source, 'index.js')}'`);
                     },
                 });
             }
